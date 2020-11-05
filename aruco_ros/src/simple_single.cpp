@@ -227,11 +227,20 @@ public:
 
             tf::StampedTransform stampedTransform(transform, curr_stamp, reference_frame, marker_frame);
             br.sendTransform(stampedTransform);
-            geometry_msgs::PoseStamped poseMsg;
+            geometry_msgs::PoseStamped poseMsg,poseMsg_temp;
             tf::poseTFToMsg(transform, poseMsg.pose);
             poseMsg.header.frame_id = reference_frame;
             poseMsg.header.stamp = curr_stamp;
-            pose_pub.publish(poseMsg);
+
+            poseMsg_temp.header = poseMsg.header;
+            tf::Transform transform_pose;
+            transform_pose.setIdentity();
+            tf::Quaternion q;
+            q.setRPY(0.0, -1.57, 0.0);
+            transform_pose.setRotation(q);
+            transform_pose = transform * transform_pose;
+            tf::poseTFToMsg(transform_pose, poseMsg_temp.pose);
+            pose_pub.publish(poseMsg_temp);
 
             geometry_msgs::TransformStamped transformMsg;
             tf::transformStampedTFToMsg(stampedTransform, transformMsg);
