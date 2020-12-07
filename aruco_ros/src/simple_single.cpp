@@ -236,7 +236,7 @@ public:
             tf::Transform transform_pose;
             transform_pose.setIdentity();
             tf::Quaternion q;
-            q.setRPY(0.0, -1.57, 0.0);
+            q.setRPY(0.0, 1.57, 0.0);
             transform_pose.setRotation(q);
             transform_pose = transform * transform_pose;
             tf::poseTFToMsg(transform_pose, poseMsg_temp.pose);
