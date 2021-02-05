@@ -194,9 +194,10 @@ public:
           // now find the transform for each detected marker
           for (std::size_t i = 0; i < markers_.size(); ++i)
           {
+            static tf::Transform turn_to_z(tf::Quaternion(M_PI_2, 0.0, 0.0));
             aruco_msgs::Marker & marker_i = marker_msg_->markers.at(i);
             tf::Transform transform = aruco_ros::arucoMarker2Tf(markers_[i]);
-            transform = static_cast<tf::Transform>(cameraToReference) * transform;
+            transform = static_cast<tf::Transform>(cameraToReference) * transform * turn_to_z;
             tf::poseTFToMsg(transform, marker_i.pose.pose);
             marker_i.header.frame_id = reference_frame_;
           }
